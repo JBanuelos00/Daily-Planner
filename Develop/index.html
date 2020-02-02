@@ -24,51 +24,76 @@
   <div class="container">
     <!-- Timeblocks go here -->
 
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=9>9AM</div>
+        <textarea class="col-10" id="time9"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
+    </div>
 
-    <div class="row">
-      <div class="time time-block col-1" value=9>9AM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=10>10AM</div>
+        <textarea class="col-10" id="time10"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
     </div>
-    <div class="row">
-      <div class="time time-block col-1" value=10>10AM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
+
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=11>11AM</div>
+        <textarea class="col-10" id="time11"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
     </div>
-    <div class="row">
-      <div class="time time-block col-1" value=11>11AM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
+
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=12>12PM</div>
+        <textarea class="col-10" id="time12"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
     </div>
-    <div class="row">
-      <div class="time time-block col-1" value=12>12AM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
+
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=13>1PM</div>
+        <textarea class="col-10" id="time13"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
     </div>
-    <div class="row">
-      <div class="time time-block col-1" value=13>1PM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
+
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=14>2PM</div>
+        <textarea class="col-10" id="time14"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
     </div>
-    <div class="row">
-      <div class="time time-block col-1" value=14>2PM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
+
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=15>3PM</div>
+        <textarea class="col-10" id="time15"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
     </div>
-    <div class="row">
-      <div class="time time-block col-1" value=15>3PM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
+
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=16>4PM</div>
+        <textarea class="col-10" id="time16"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
     </div>
-    <div class="row">
-      <div class="time time-block col-1" value=16>4PM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
-    </div>
-    <div class="row">
-      <div class="time time-block col-1" value=17>5PM</div>
-      <textarea class="col-10" id="userInput"></textarea>
-      <button type="button" class="saveBtn col-1"></button>
+
+    <div class="time-block">
+      <div class="row">
+        <div class="hour col-1" value=17>5PM</div>
+        <textarea class="col-10" id="time17"></textarea>
+        <button type="button" class="saveBtn col-1"></button>
+      </div>
     </div>
   </div>
 
@@ -76,24 +101,60 @@
   <script>
     //making sure the html finishes loading before loading this
     $(document).ready(function () {
-      var currentDay = moment().format('MMMM Do YYYY, h:mm:ss A');
+
+      savedInput();
+
+      //Seetting the currentTime to the hour in a 24 hour clock.
       var currentTime = moment().format('H');
-      
-      $("#currentDay").text(currentDay);
-      
+      var idArray = ["time9", "time10", "time11", "time12", "time13", "time14", "time15", "time16", "time17"];
+      var arrayLength = idArray.length;
+      var timeSlot = $(".hour").attr("value");
+
+      //Setting the date and time in the currentDay header
+      function upToDate() {
+        var currentDay = moment().format('MMMM Do YYYY, h:mm:ss A');
+        $("#currentDay").text(currentDay);
+        currentTime;
+        
+        if (timeSlot < currentTime) {
+          $(this).attr("style", "background: grey");
+        } 
+        
+        // else if (timeSlot > currentTime) {
+          // this.style.background = "blue"
+        // } else {
+          // this.style.background = "green"
+        // }
+      }
+
       upToDate();
-      setInterval(function() {
-      upToDate();
+      //Updating upToDate() every second to make sure the date and time is current
+      setInterval(function () {
+        upToDate();
       }, 1000);
 
+      //getting our locally stored item and setting it to our text areas.
+      function savedInput() {
+        for (var i = 0; i < arrayLength; i++) {
+          var userInput = localStorage.getItem(idArray[i]);
 
-      $(".saveBtn").on("click", function() {
+          if (userInput === null) {
+            return;
+          } else if ($("textarea").attr("id") === idArray[i]) {
+            $("textarea").text(userInput);
+          }
+        }
+      }
+
+
+      $(".saveBtn").on("click", function () {
         var input = $(this).siblings("textarea").val();
-
-        console.log(input);
+        var id = $(this).siblings("textarea").attr("id");
+        localStorage.setItem(id, input);
+        savedInput();
       });
 
-      
+
 
     });
   </script>
